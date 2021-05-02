@@ -1,15 +1,15 @@
 <?php
 
 /*
-    Plugin Name: BTCPay for WooCommerce
+    Plugin Name: LTCPay for WooCommerce
     Plugin URI:  https://wordpress.org/plugins/btcpay-for-woocommerce
-    Description: Enable your WooCommerce store to accept Bitcoin with BTCPay.
-    Author:      BTCPay
-    Text Domain: BTCPay
+    Description: Enable your WooCommerce store to accept Litecoin with LTCPay.
+    Author:      LTCPay
+    Text Domain: LTCPay
     Author URI:  https://github.com/btcpayserver
 
     Version:           3.0.12
-    License:           Copyright 2011-2018 BTCPay & BitPay Inc., MIT License
+    License:           Copyright 2011-2018 BTCPay & BitPay Inc. & LTCPay, MIT License
     License URI:       https://github.com/btcpayserver/woocommerce-plugin/blob/master/LICENSE
     GitHub Plugin URI: https://github.com/btcpayserver/woocommerce-plugin
  */
@@ -32,7 +32,7 @@ if (true === file_exists($autoloader_param) &&
     \Bitpay\Autoloader::register();
   }
 } else {
-    throw new \Exception('The BTCPay payment plugin was not installed correctly or the files are corrupt. Please reinstall the plugin. If this message persists after a reinstall, contact the BTCPay team through https://chat.btcpayserver.org with this message.');
+    throw new \Exception('The LTCPay payment plugin was not installed correctly or the files are corrupt. Please reinstall the plugin. If this message persists after a reinstall, contact the LTCPay team through https://chat.btcpayserver.org with this message.');
 }
 
 // Exist for quirks in object serialization...
@@ -89,9 +89,9 @@ function woocommerce_btcpay_init()
             $this->id                 = 'btcpay';
             $this->icon               = plugin_dir_url(__FILE__).'assets/img/icon.png';
             $this->has_fields         = false;
-            $this->order_button_text  = __('Proceed to BTCPay', 'btcpay');
-            $this->method_title       = 'BTCPay';
-            $this->method_description = 'BTCPay allows you to accept bitcoin payments on your WooCommerce store.';
+            $this->order_button_text  = __('Proceed to LTCPay', 'btcpay');
+            $this->method_title       = 'LTCPay';
+            $this->method_description = 'LTCPay allows you to accept litecoin payments on your WooCommerce store.';
 
             // Load the settings.
             $this->init_form_fields();
@@ -115,7 +115,7 @@ function woocommerce_btcpay_init()
             $this->debug_php_version    = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
             $this->debug_plugin_version = constant("BTCPAY_VERSION");
 
-            $this->log('BTCPay Woocommerce payment plugin object constructor called. Plugin is v' . $this->debug_plugin_version . ' and server is PHP v' . $this->debug_php_version);
+            $this->log('LTCPay Woocommerce payment plugin object constructor called. Plugin is v' . $this->debug_plugin_version . ' and server is PHP v' . $this->debug_php_version);
             $this->log('    [Info] $this->api_key            = ' . $this->api_key);
             $this->log('    [Info] $this->api_pub            = ' . $this->api_pub);
             $this->log('    [Info] $this->api_sin            = ' . $this->api_sin);
@@ -238,8 +238,8 @@ function woocommerce_btcpay_init()
                 $currency = new \Bitpay\Currency(get_woocommerce_currency());
 
                 if (false === isset($currency) || true === empty($currency)) {
-                    $this->log('    [Error] The BTCPay payment plugin was called to check if it was valid for use but could not instantiate a currency object.');
-                    throw new \Exception('The BTCPay payment plugin was called to check if it was valid for use but could not instantiate a currency object. Cannot continue!');
+                    $this->log('    [Error] The LTCPay payment plugin was called to check if it was valid for use but could not instantiate a currency object.');
+                    throw new \Exception('The LTCPay payment plugin was called to check if it was valid for use but could not instantiate a currency object. Cannot continue!');
                 }
             } catch (\Exception $e) {
                 $this->log('    [Error] In is_valid_for_use: ' . $e->getMessage());
@@ -272,7 +272,7 @@ function woocommerce_btcpay_init()
                     'title'       => __('Customer Message', 'btcpay'),
                     'type'        => 'textarea',
                     'description' => __('Message to explain how the customer will be paying for the purchase.', 'btcpay'),
-                    'default'     => 'You will be redirected to BTCPay to complete your purchase.',
+                    'default'     => 'You will be redirected to LTCPay to complete your purchase.',
                     'desc_tip'    => true,
                ),
                 'api_token' => array(
@@ -300,13 +300,13 @@ function woocommerce_btcpay_init()
                     'type'        => 'checkbox',
                     'label'       => sprintf(__('Enable logging <a href="%s" class="button">View Logs</a>', 'btcpay'), $logs_href),
                     'default'     => 'no',
-                    'description' => sprintf(__('Log BTCPay events, such as IPN requests, inside <code>%s</code>', 'btcpay'), wc_get_log_file_path('btcpay')),
+                    'description' => sprintf(__('Log LTCPay events, such as IPN requests, inside <code>%s</code>', 'btcpay'), wc_get_log_file_path('btcpay')),
                     'desc_tip'    => true,
                ),
                 'notification_url' => array(
                     'title'       => __('Notification URL', 'btcpay'),
                     'type'        => 'url',
-                    'description' => __('BTCPay will send IPNs for orders to this URL with the BTCPay invoice data', 'btcpay'),
+                    'description' => __('LTCPay will send IPNs for orders to this URL with the LTCPay invoice data', 'btcpay'),
                     'default'     => '',
                     'placeholder' => WC()->api_request_url('WC_Gateway_BtcPay'),
                     'desc_tip'    => true,
@@ -314,7 +314,7 @@ function woocommerce_btcpay_init()
                 'redirect_url' => array(
                     'title'       => __('Redirect URL', 'btcpay'),
                     'type'        => 'url',
-                    'description' => __('After paying the BTCPay invoice, users will be redirected back to this URL', 'btcpay'),
+                    'description' => __('After paying the LTCPay invoice, users will be redirected back to this URL', 'btcpay'),
                     'default'     => '',
                     'placeholder' => $this->get_return_url(),
                     'desc_tip'    => true,
@@ -322,7 +322,7 @@ function woocommerce_btcpay_init()
                 'support_details' => array(
                     'title'       => __( 'Plugin & Support Information', 'btcpay' ),
                     'type'        => 'title',
-                    'description' => sprintf(__('This plugin version is %s and your PHP version is %s. If you need assistance, please come on our chat https://chat.btcpayserver.org. Thank you for using BTCPay!', 'btcpay'), constant("BTCPAY_VERSION"), PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION),
+                    'description' => sprintf(__('This plugin version is %s and your PHP version is %s. If you need assistance, please come on our chat https://chat.btcpayserver.org. Thank you for using LTCPay!', 'btcpay'), constant("BTCPAY_VERSION"), PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION),
                ),
            );
 
@@ -610,15 +610,15 @@ function woocommerce_btcpay_init()
             $this->log('    [Info] Entered process_payment() with order_id = ' . $order_id . '...');
 
             if (true === empty($order_id)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but the order_id was missing.');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but the order_id was missing. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but the order_id was missing.');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but the order_id was missing. Cannot continue!');
             }
 
             $order = wc_get_order( $order_id);
 
             if (false === $order) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not retrieve the order details for order_id ' . $order_id);
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not retrieve the order details for order_id ' . $order_id . '. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not retrieve the order details for order_id ' . $order_id);
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not retrieve the order details for order_id ' . $order_id . '. Cannot continue!');
             }
 
             // The order number can differ from the internal $order_id, when a custom
@@ -668,16 +668,16 @@ function woocommerce_btcpay_init()
             $currency = new \Bitpay\Currency($currency_code);
 
             if (false === isset($currency) && true === empty($currency)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not instantiate a Currency object.');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not instantiate a Currency object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not instantiate a Currency object.');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not instantiate a Currency object. Cannot continue!');
             }
 
             // Get a BitPay Client to prepare for invoice creation
             $client = new \Bitpay\Client\Client();
 
             if (false === isset($client) && true === empty($client)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not instantiate a client object.');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not instantiate a client object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not instantiate a client object.');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not instantiate a client object. Cannot continue!');
             }
             $url = $this->api_url;
             $client->setUri($url);
@@ -687,8 +687,8 @@ function woocommerce_btcpay_init()
             $curlAdapter = new \Bitpay\Client\Adapter\CurlAdapter();
 
             if (false === isset($curlAdapter) || true === empty($curlAdapter)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not instantiate a CurlAdapter object.');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not instantiate a CurlAdapter object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not instantiate a CurlAdapter object.');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not instantiate a CurlAdapter object. Cannot continue!');
             }
 
             $client->setAdapter($curlAdapter);
@@ -696,29 +696,29 @@ function woocommerce_btcpay_init()
             if (false === empty($this->api_key)) {
                 $client->setPrivateKey($this->api_key);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
-                throw new \Exception(' The BTCPay payment plugin was called to process a payment but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
+                throw new \Exception(' The LTCPay payment plugin was called to process a payment but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
             }
 
             if (false === empty($this->api_pub)) {
                 $client->setPublicKey($this->api_pub);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
-                throw new \Exception(' The BTCPay payment plugin was called to process a payment but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
+                throw new \Exception(' The LTCPay payment plugin was called to process a payment but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
             }
 
             if (false === empty($this->api_token)) {
                 $client->setToken($this->api_token);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not set client->setToken to this->api_token. The empty() check failed!');
-                throw new \Exception(' The BTCPay payment plugin was called to process a payment but could not set client->setToken to this->api_token. The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not set client->setToken to this->api_token. The empty() check failed!');
+                throw new \Exception(' The LTCPay payment plugin was called to process a payment but could not set client->setToken to this->api_token. The empty() check failed!');
             }
 
             $redirect = $this->get_btcpay_redirect($order_id, $client);
 
             if($redirect)
             {
-                $this->log('    [Info] Existing BTCPay invoice has already been created, redirecting to it...');
+                $this->log('    [Info] Existing LTCPay invoice has already been created, redirecting to it...');
                 $this->log('    [Info] Leaving process_payment()...');
                 return array(
                     'result'   => 'success',
@@ -732,8 +732,8 @@ function woocommerce_btcpay_init()
             $invoice = new \Bitpay\Invoice();
 
             if (false === isset($invoice) || true === empty($invoice)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not instantiate an Invoice object.');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not instantiate an Invoice object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not instantiate an Invoice object.');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not instantiate an Invoice object. Cannot continue!');
             } else {
                 $this->log('    [Info] Invoice object created successfully...');
             }
@@ -760,8 +760,8 @@ function woocommerce_btcpay_init()
             $item = new \Bitpay\Item();
 
             if (false === isset($item) || true === empty($item)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not instantiate an item object.');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not instantiate an item object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not instantiate an item object.');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not instantiate an item object. Cannot continue!');
             } else {
                 $this->log('    [Info] Item object created successfully...');
             }
@@ -775,8 +775,8 @@ function woocommerce_btcpay_init()
                 $taxIncluded = $order->get_cart_tax();
                 $item->setTaxIncluded($taxIncluded);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not set item->setPrice to $order->calculate_totals(). The empty() check failed!');
-                throw new \Exception('The BTCPay payment plugin was called to process a payment but could not set item->setPrice to $order->calculate_totals(). The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not set item->setPrice to $order->calculate_totals(). The empty() check failed!');
+                throw new \Exception('The LTCPay payment plugin was called to process a payment but could not set item->setPrice to $order->calculate_totals(). The empty() check failed!');
             }
             // Add buyer's email & country code to the invoice
             $buyer = new \Bitpay\Buyer();
@@ -797,8 +797,8 @@ function woocommerce_btcpay_init()
                 $invoice = $client->createInvoice($invoice);
 
                 if (false === isset($invoice) || true === empty($invoice)) {
-                    $this->log('    [Error] The BTCPay payment plugin was called to process a payment but could not instantiate an invoice object.');
-                    throw new \Exception('The BTCPay payment plugin was called to process a payment but could not instantiate an invoice object. Cannot continue!');
+                    $this->log('    [Error] The LTCPay payment plugin was called to process a payment but could not instantiate an invoice object.');
+                    throw new \Exception('The LTCPay payment plugin was called to process a payment but could not instantiate an invoice object. Cannot continue!');
                 } else {
                     $this->log('    [Info] Call to generate invoice was successful: ' . $client->getResponse()->getBody());
                 }
@@ -808,7 +808,7 @@ function woocommerce_btcpay_init()
 
                 return array(
                     'result'    => 'success',
-                    'messages'  => 'Sorry, but Bitcoin checkout with BTCPay does not appear to be working.'
+                    'messages'  => 'Sorry, but Litecoin checkout with LTCPay does not appear to be working.'
                 );
             }
 
@@ -818,7 +818,7 @@ function woocommerce_btcpay_init()
             $redirect = $this->get_btcpay_redirect($order_id, $client);
             if($redirect)
             {
-                $this->log('    [Info] Existing BTCPay invoice has already been created, redirecting to it...');
+                $this->log('    [Info] Existing LTCPay invoice has already been created, redirecting to it...');
                 $this->log('    [Info] Leaving process_payment()...');
                 return array(
                     'result'   => 'success',
@@ -845,7 +845,7 @@ function woocommerce_btcpay_init()
                 $order->reduce_order_stock();
             }
 
-            $this->log('    [Info] BTCPay invoice assigned ' . $invoice->getId());
+            $this->log('    [Info] LTCPay invoice assigned ' . $invoice->getId());
             $this->log('    [Info] Leaving process_payment()...');
 
             // Redirect the customer to the BitPay invoice
@@ -863,7 +863,7 @@ function woocommerce_btcpay_init()
 
             if (true === empty($post)) {
                 $this->log('    [Error] No post data sent to IPN handler!');
-                error_log('[Error] BTCPay plugin received empty POST data for an IPN message.');
+                error_log('[Error] LTCPay plugin received empty POST data for an IPN message.');
 
                 wp_die('No post data');
             } else {
@@ -886,7 +886,7 @@ function woocommerce_btcpay_init()
 
             if (true === empty($json)) {
                 $this->log('    [Error] Invalid JSON payload sent to IPN handler: ' . $post);
-                error_log('[Error] BTCPay plugin received an invalid JSON payload sent to IPN handler: ' . $post);
+                error_log('[Error] LTCPay plugin received an invalid JSON payload sent to IPN handler: ' . $post);
 
                 wp_die('Invalid JSON');
             } else {
@@ -895,7 +895,7 @@ function woocommerce_btcpay_init()
 
             if (false === array_key_exists('id', $json)) {
                 $this->log('    [Error] No invoice ID present in JSON payload: ' . var_export($json, true));
-                error_log('[Error] BTCPay plugin did not receive an invoice ID present in JSON payload: ' . var_export($json, true));
+                error_log('[Error] LTCPay plugin did not receive an invoice ID present in JSON payload: ' . var_export($json, true));
 
                 wp_die('No Invoice ID');
             } else {
@@ -904,7 +904,7 @@ function woocommerce_btcpay_init()
 
             if (false === array_key_exists('url', $json)) {
                 $this->log('    [Error] No invoice URL present in JSON payload: ' . var_export($json, true));
-                error_log('[Error] BTCPay plugin did not receive an invoice URL present in JSON payload: ' . var_export($json, true));
+                error_log('[Error] LTCPay plugin did not receive an invoice URL present in JSON payload: ' . var_export($json, true));
 
                 wp_die('No Invoice URL');
             } else {
@@ -915,8 +915,8 @@ function woocommerce_btcpay_init()
             $client = new \Bitpay\Client\Client();
 
             if (false === isset($client) && true === empty($client)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to handle an IPN but could not instantiate a client object.');
-                throw new \Exception('The BTCPay payment plugin was called to handle an IPN but could not instantiate a client object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to handle an IPN but could not instantiate a client object.');
+                throw new \Exception('The LTCPay payment plugin was called to handle an IPN but could not instantiate a client object. Cannot continue!');
             } else {
                 $this->log('    [Info] Created new Client object in IPN handler...');
             }
@@ -928,8 +928,8 @@ function woocommerce_btcpay_init()
             $curlAdapter = new \Bitpay\Client\Adapter\CurlAdapter();
 
             if (false === isset($curlAdapter) && true === empty($curlAdapter)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to handle an IPN but could not instantiate a CurlAdapter object.');
-                throw new \Exception('The BTCPay payment plugin was called to handle an IPN but could not instantiate a CurlAdapter object. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to handle an IPN but could not instantiate a CurlAdapter object.');
+                throw new \Exception('The LTCPay payment plugin was called to handle an IPN but could not instantiate a CurlAdapter object. Cannot continue!');
             } else {
                 $this->log('    [Info] Created new CurlAdapter object in IPN handler...');
             }
@@ -940,22 +940,22 @@ function woocommerce_btcpay_init()
             if (false === empty($this->api_key)) {
                 $client->setPrivateKey($this->api_key);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to handle an IPN but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
-                throw new \Exception('The BTCPay payment plugin was called to handle an IPN but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to handle an IPN but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
+                throw new \Exception('The LTCPay payment plugin was called to handle an IPN but could not set client->setPrivateKey to this->api_key. The empty() check failed!');
             }
 
             if (false === empty($this->api_pub)) {
                 $client->setPublicKey($this->api_pub);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to handle an IPN but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
-                throw new \Exception('The BTCPay payment plugin was called to handle an IPN but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to handle an IPN but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
+                throw new \Exception('The LTCPay payment plugin was called to handle an IPN but could not set client->setPublicKey to this->api_pub. The empty() check failed!');
             }
 
             if (false === empty($this->api_token)) {
                 $client->setToken($this->api_token);
             } else {
-                $this->log('    [Error] The BTCPay payment plugin was called to handle an IPN but could not set client->setToken to this->api_token. The empty() check failed!');
-                throw new \Exception('The BTCPay payment plugin was called to handle an IPN but could not set client->setToken to this->api_token. The empty() check failed!');
+                $this->log('    [Error] The LTCPay payment plugin was called to handle an IPN but could not set client->setToken to this->api_token. The empty() check failed!');
+                throw new \Exception('The LTCPay payment plugin was called to handle an IPN but could not set client->setToken to this->api_token. The empty() check failed!');
             }
 
             $this->log('    [Info] Key and token empty checks passed.  Parameters in client set accordingly...');
@@ -994,14 +994,14 @@ function woocommerce_btcpay_init()
                 $posData = json_decode($json['posData'], true);
                 $order_id = $posData['WooCommerce']['Order ID'];
 
-                $this->log('    [Error] Can\'t find order by BTCPay meta data. Using order ID fallback from posData.');
+                $this->log('    [Error] Can\'t find order by LTCPay meta data. Using order ID fallback from posData.');
             }
 
             $responseData = json_decode($client->getResponse()->getBody());
 
             if (false === isset($order_id) && true === empty($order_id)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process an IPN message but could not obtain the order ID from the invoice.');
-                throw new \Exception('The BTCPay payment plugin was called to process an IPN message but could not obtain the order ID from the invoice. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process an IPN message but could not obtain the order ID from the invoice.');
+                throw new \Exception('The LTCPay payment plugin was called to process an IPN message but could not obtain the order ID from the invoice. Cannot continue!');
             } else {
                 $this->log('    [Info] Order ID is: ' . $order_id. ' (Order Number: ' . $order_number . ')');
             }
@@ -1010,8 +1010,8 @@ function woocommerce_btcpay_init()
             $this->log('$order = ' . $order. 'and order class = ' . get_class($order));
 
             if (false === $order) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process an IPN message but could not retrieve the order details for order_id: "' . $order_id . '". If you use an alternative order numbering system, please see class-wc-gateway-btcpay.php to apply a search filter.');
-                throw new \Exception('The BTCPay payment plugin was called to process an IPN message but could not retrieve the order details for order_id ' . $order_id . '. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process an IPN message but could not retrieve the order details for order_id: "' . $order_id . '". If you use an alternative order numbering system, please see class-wc-gateway-btcpay.php to apply a search filter.');
+                throw new \Exception('The LTCPay payment plugin was called to process an IPN message but could not retrieve the order details for order_id ' . $order_id . '. Cannot continue!');
             } else {
                 $this->log('    [Info] Order details retrieved successfully...');
             }
@@ -1032,15 +1032,15 @@ function woocommerce_btcpay_init()
 
             if($expected_invoiceId !== $json['id'])
             {
-                $this->log('    [Error] Received IPN for order '. $order_id . ' with BTCPay invoice id ' . $json['id'] . ' while expected BTCPay invoice is ' . $expected_invoiceId);
-                throw new \Exception('Received IPN for order '. $order_id . ' with BTCPay invoice id ' . $json['id'] . ' while expected BTCPay invoice is ' . $expected_invoiceId);
+                $this->log('    [Error] Received IPN for order '. $order_id . ' with LTCPay invoice id ' . $json['id'] . ' while expected LTCPay invoice is ' . $expected_invoiceId);
+                throw new \Exception('Received IPN for order '. $order_id . ' with LTCPay invoice id ' . $json['id'] . ' while expected LTCPay invoice is ' . $expected_invoiceId);
             }
 
             $current_status = $order->get_status();
 
             if (false === isset($current_status) || true === empty($current_status)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process an IPN message but could not obtain the current status from the order.');
-                throw new \Exception('The BTCPay payment plugin was called to process an IPN message but could not obtain the current status from the order. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process an IPN message but could not obtain the current status from the order.');
+                throw new \Exception('The LTCPay payment plugin was called to process an IPN message but could not obtain the current status from the order. Cannot continue!');
             } else {
                 $this->log('    [Info] The current order status for this order is ' . $current_status);
             }
@@ -1059,8 +1059,8 @@ function woocommerce_btcpay_init()
             $checkStatus = $invoice->getStatus();
 
             if (false === isset($checkStatus) && true === empty($checkStatus)) {
-                $this->log('    [Error] The BTCPay payment plugin was called to process an IPN message but could not obtain the current status from the invoice.');
-                throw new \Exception('The BTCPay payment plugin was called to process an IPN message but could not obtain the current status from the invoice. Cannot continue!');
+                $this->log('    [Error] The LTCPay payment plugin was called to process an IPN message but could not obtain the current status from the invoice.');
+                throw new \Exception('The LTCPay payment plugin was called to process an IPN message but could not obtain the current status from the invoice. Cannot continue!');
             } else {
                 $this->log('    [Info] The current status for this invoice is ' . $checkStatus);
             }
@@ -1075,7 +1075,7 @@ function woocommerce_btcpay_init()
                         $this->log('    [Info] This order has not been updated yet so setting new status...');
                         if($paid_status !== 'BTCPAY_IGNORE')
                             $order->update_status($paid_status);
-                        $order->add_order_note(__('BTCPay invoice paid. Awaiting network confirmation and payment completed status.', 'btcpay'));
+                        $order->add_order_note(__('LTCPay invoice paid. Awaiting network confirmation and payment completed status.', 'btcpay'));
                         break;
 
                     // The "confirmed" status is sent when the payment is
@@ -1084,7 +1084,7 @@ function woocommerce_btcpay_init()
                         $this->log('    [Info] This order has not been updated yet so setting confirmed status...');
                         if($confirmed_status !== 'BTCPAY_IGNORE')
                             $order->update_status($confirmed_status);
-                        $order->add_order_note(__('BTCPay invoice confirmed. Awaiting payment completed status.', 'btcpay'));
+                        $order->add_order_note(__('LTCPay invoice confirmed. Awaiting payment completed status.', 'btcpay'));
                         break;
 
                     // The complete status is when the Bitcoin network
@@ -1096,7 +1096,7 @@ function woocommerce_btcpay_init()
                         $order->payment_complete();
                         if($complete_status !== 'BTCPAY_IGNORE')
                             $order->update_status($complete_status);
-                        $order->add_order_note(__('BTCPay invoice payment completed. Payment credited to your merchant account.', 'btcpay'));
+                        $order->add_order_note(__('LTCPay invoice payment completed. Payment credited to your merchant account.', 'btcpay'));
                         break;
 
                     // This order is invalid for some reason.
@@ -1106,14 +1106,14 @@ function woocommerce_btcpay_init()
 
                         $this->log('    [Info] This order has a problem so setting "invalid" status...');
                         if($invalid_status !== 'BTCPAY_IGNORE')
-                            $order->update_status($invalid_status, __('Bitcoin payment is invalid for this order! The payment was not confirmed by the network within on time. Do not ship the product for this order!', 'btcpay'));
+                            $order->update_status($invalid_status, __('Litecoin payment is invalid for this order! The payment was not confirmed by the network within on time. Do not ship the product for this order!', 'btcpay'));
                         break;
 
                     case 'expired':
 
                         $this->log('    [Info] The invoice is in the "expired" status...');
                         if($expired_status !== 'BTCPAY_IGNORE')
-                            $order->update_status($expired_status, __('Bitcoin payment has expired for this order! The payment was not broadcasted before its expiration. Do not ship the product for this order!', 'btcpay'));
+                            $order->update_status($expired_status, __('Litecoin payment has expired for this order! The payment was not broadcasted before its expiration. Do not ship the product for this order!', 'btcpay'));
                         break;
 
                     // There was an unknown message received.
@@ -1167,7 +1167,7 @@ function woocommerce_btcpay_init()
         public function btcpay_encrypt($data)
         {
             if (false === isset($data) || true === empty($data)) {
-                throw new \Exception('The BTCPay payment plugin was called to encrypt data but no data was passed!');
+                throw new \Exception('The LTCPay payment plugin was called to encrypt data but no data was passed!');
             }
 
             $this->log('    [Info] Entered btcpay_encrypt...');
@@ -1182,13 +1182,13 @@ function woocommerce_btcpay_init()
                 $fingerprint = substr($fingerprint, 0, 24);
 
                 if (false === isset($fingerprint) || true === empty($fingerprint)) {
-                    throw new \Exception('The BTCPay payment plugin was called to encrypt data but could not generate a fingerprint parameter!');
+                    throw new \Exception('The LTCPay payment plugin was called to encrypt data but could not generate a fingerprint parameter!');
                 }
 
                 $encrypted = $openssl_ext->encrypt(base64_encode(serialize($data)), $fingerprint, '1234567890123456');
 
                 if (true === empty($encrypted)) {
-                    throw new \Exception('The BTCPay payment plugin was called to encrypt a serialized object and failed!');
+                    throw new \Exception('The LTCPay payment plugin was called to encrypt a serialized object and failed!');
                 }
 
                 $this->log('    [Info] Leaving class level btcpay_encrypt...');
@@ -1203,7 +1203,7 @@ function woocommerce_btcpay_init()
         public function btcpay_decrypt($encrypted)
         {
             if (false === isset($encrypted) || true === empty($encrypted)) {
-                throw new \Exception('The BTCPay payment plugin was called to decrypt data but no data was passed!');
+                throw new \Exception('The LTCPay payment plugin was called to decrypt data but no data was passed!');
             }
 
             $this->log('    [Info] Entered class level btcpay_decrypt...');
@@ -1219,7 +1219,7 @@ function woocommerce_btcpay_init()
                 $fingerprint = substr($fingerprint, 0, 24);
 
                 if (false === isset($fingerprint) || true === empty($fingerprint)) {
-                    throw new \Exception('The BTCPay payment plugin was called to decrypt data but could not generate a fingerprint parameter!');
+                    throw new \Exception('The LTCPay payment plugin was called to decrypt data but could not generate a fingerprint parameter!');
                 }
 
                 $decrypted = base64_decode($openssl_ext->decrypt($encrypted, $fingerprint, '1234567890123456'));
@@ -1232,7 +1232,7 @@ function woocommerce_btcpay_init()
                 }
 
                 if (true === empty($decrypted)) {
-                    throw new \Exception('The BTCPay payment plugin was called to unserialize a decrypted object and failed! The decrypt function was called with "' . $encrypted . '"');
+                    throw new \Exception('The LTCPay payment plugin was called to unserialize a decrypted object and failed! The decrypt function was called with "' . $encrypted . '"');
                 }
 
                 $this->log('    [Info] Leaving class level btcpay_decrypt...');
@@ -1325,7 +1325,7 @@ function woocommerce_btcpay_init()
             $key = new \Bitpay\PrivateKey();
 
             if (true === empty($key)) {
-                throw new \Exception('The BTCPay payment plugin was called to process a pairing code but could not instantiate a PrivateKey object. Cannot continue!');
+                throw new \Exception('The LTCPay payment plugin was called to process a pairing code but could not instantiate a PrivateKey object. Cannot continue!');
             }
 
             $key->generate();
@@ -1334,7 +1334,7 @@ function woocommerce_btcpay_init()
             $pub = new \Bitpay\PublicKey();
 
             if (true === empty($pub)) {
-                throw new \Exception('The BTCPay payment plugin was called to process a pairing code but could not instantiate a PublicKey object. Cannot continue!');
+                throw new \Exception('The LTCPay payment plugin was called to process a pairing code but could not instantiate a PublicKey object. Cannot continue!');
             }
 
             $pub->setPrivateKey($key);
@@ -1344,7 +1344,7 @@ function woocommerce_btcpay_init()
             $sin = new \Bitpay\SinKey();
 
             if (true === empty($sin)) {
-                throw new \Exception('The BTCPay payment plugin was called to process a pairing code but could not instantiate a SinKey object. Cannot continue!');
+                throw new \Exception('The LTCPay payment plugin was called to process a pairing code but could not instantiate a SinKey object. Cannot continue!');
             }
 
             $sin->setPublicKey($pub);
@@ -1354,13 +1354,13 @@ function woocommerce_btcpay_init()
             $client = new \Bitpay\Client\Client();
 
             if (true === empty($client)) {
-                throw new \Exception('The BTCPay payment plugin was called to process a pairing code but could not instantiate a Client object. Cannot continue!');
+                throw new \Exception('The LTCPay payment plugin was called to process a pairing code but could not instantiate a Client object. Cannot continue!');
             }
             $client->setUri($url);
             $curlAdapter = new \Bitpay\Client\Adapter\CurlAdapter();
 
             if (true === empty($curlAdapter)) {
-                throw new \Exception('The BTCPay payment plugin was called to process a pairing code but could not instantiate a CurlAdapter object. Cannot continue!');
+                throw new \Exception('The LTCPay payment plugin was called to process a pairing code but could not instantiate a CurlAdapter object. Cannot continue!');
             }
 
             $client->setAdapter($curlAdapter);
@@ -1420,7 +1420,7 @@ function woocommerce_btcpay_init()
     function btcpay_encrypt($data)
     {
         if (false === isset($data) || true === empty($data)) {
-            throw new \Exception('The BTCPay payment plugin was called to encrypt data but no data was passed!');
+            throw new \Exception('The LTCPay payment plugin was called to encrypt data but no data was passed!');
         }
 
         $openssl_ext = new \Bitpay\Crypto\OpenSSLExtension();
@@ -1433,13 +1433,13 @@ function woocommerce_btcpay_init()
             $fingerprint = substr($fingerprint, 0, 24);
 
             if (false === isset($fingerprint) || true === empty($fingerprint)) {
-                throw new \Exception('The BTCPay payment plugin was called to encrypt data but could not generate a fingerprint parameter!');
+                throw new \Exception('The LTCPay payment plugin was called to encrypt data but could not generate a fingerprint parameter!');
             }
 
             $encrypted = $openssl_ext->encrypt(base64_encode(serialize($data)), $fingerprint, '1234567890123456');
 
             if (true === empty($encrypted)) {
-                throw new \Exception('The BTCPay payment plugin was called to serialize an encrypted object and failed!');
+                throw new \Exception('The LTCPay payment plugin was called to serialize an encrypted object and failed!');
             }
 
             return $encrypted;
@@ -1451,7 +1451,7 @@ function woocommerce_btcpay_init()
     function btcpay_decrypt($encrypted)
     {
         if (false === isset($encrypted) || true === empty($encrypted)) {
-            throw new \Exception('The BTCPay payment plugin was called to decrypt data but no data was passed!');
+            throw new \Exception('The LTCPay payment plugin was called to decrypt data but no data was passed!');
         }
         $openssl_ext = new \Bitpay\Crypto\OpenSSLExtension();
 
@@ -1464,7 +1464,7 @@ function woocommerce_btcpay_init()
             $fingerprint = substr($fingerprint, 0, 24);
 
             if (false === isset($fingerprint) || true === empty($fingerprint)) {
-                throw new \Exception('The BTCPay payment plugin was called to decrypt data but could not generate a fingerprint parameter!');
+                throw new \Exception('The LTCPay payment plugin was called to decrypt data but could not generate a fingerprint parameter!');
             }
 
             $decrypted = base64_decode($openssl_ext->decrypt($encrypted, $fingerprint, '1234567890123456'));
@@ -1477,7 +1477,7 @@ function woocommerce_btcpay_init()
             }
 
             if (true === empty($decrypted)) {
-                throw new \Exception('The BTCPay payment plugin was called to unserialize a decrypted object and failed! The decrypt function was called with "' . $encrypted . '"');
+                throw new \Exception('The LTCPay payment plugin was called to unserialize a decrypted object and failed! The decrypt function was called with "' . $encrypted . '"');
             }
 
             return unserialize($decrypted);
@@ -1528,33 +1528,33 @@ function woocommerce_btcpay_failed_requirements()
 
     $errors = array();
     if (extension_loaded('openssl')  === false){
-        $errors[] = 'The BTCPay payment plugin requires the OpenSSL extension for PHP in order to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'The LTCPay payment plugin requires the OpenSSL extension for PHP in order to function. Please contact your web server administrator for assistance.';
     }
     // PHP 5.4+ required
     if (true === version_compare(PHP_VERSION, '5.4.0', '<')) {
-        $errors[] = 'Your PHP version is too old. The BTCPay payment plugin requires PHP 5.4 or higher to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'Your PHP version is too old. The LTCPay payment plugin requires PHP 5.4 or higher to function. Please contact your web server administrator for assistance.';
     }
 
     // Wordpress 3.9+ required
     if (true === version_compare($wp_version, '3.9', '<')) {
-        $errors[] = 'Your WordPress version is too old. The BTCPay payment plugin requires Wordpress 3.9 or higher to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'Your WordPress version is too old. The LTCPay payment plugin requires Wordpress 3.9 or higher to function. Please contact your web server administrator for assistance.';
     }
 
     // WooCommerce required
     if (true === empty($woocommerce)) {
         $errors[] = 'The WooCommerce plugin for WordPress needs to be installed and activated. Please contact your web server administrator for assistance.';
     }elseif (true === version_compare($woocommerce->version, '2.2', '<')) {
-        $errors[] = 'Your WooCommerce version is too old. The BTCPay payment plugin requires WooCommerce 2.2 or higher to function. Your version is '.$woocommerce->version.'. Please contact your web server administrator for assistance.';
+        $errors[] = 'Your WooCommerce version is too old. The LTCPay payment plugin requires WooCommerce 2.2 or higher to function. Your version is '.$woocommerce->version.'. Please contact your web server administrator for assistance.';
     }
 
     // GMP or BCMath required
     if (false === extension_loaded('gmp') && false === extension_loaded('bcmath')) {
-        $errors[] = 'The BTCPay payment plugin requires the GMP or BC Math extension for PHP in order to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'The LTCPay payment plugin requires the GMP or BC Math extension for PHP in order to function. Please contact your web server administrator for assistance.';
     }
 
     // Curl required
     if (false === extension_loaded('curl')) {
-        $errors[] = 'The BTCPay payment plugin requires the Curl extension for PHP in order to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'The LTCPay payment plugin requires the Curl extension for PHP in order to function. Please contact your web server administrator for assistance.';
     }
 
     if (false === empty($errors)) {
@@ -1602,11 +1602,11 @@ function woocommerce_btcpay_activate()
                 deactivate_plugins(plugin_basename(__FILE__));
                 wp_die('BtcPay for WooCommerce requires that the old plugin, <b>Bitpay Woocommerce</b>, is deactivated and deleted.<br><a href="'.$plugins_url.'">Return to plugins screen</a>');
             }
-            if ('BTCPay for WooCommerce' === $plugin['Name'] && true === is_plugin_active($file) && (0 > version_compare( $plugin['Version'], '3.0' ))) {
+            if ('LTCPay for WooCommerce' === $plugin['Name'] && true === is_plugin_active($file) && (0 > version_compare( $plugin['Version'], '3.0' ))) {
                 deactivate_plugins(plugin_basename(__FILE__));
                 wp_die('BtcPay for WooCommerce requires that the 2.x version of this plugin is deactivated. <br><a href="'.$plugins_url.'">Return to plugins screen</a>');
             }
-            if ('BTCPay for WooCommerce' === $plugin['Name']
+            if ('LTCPay for WooCommerce' === $plugin['Name']
              && (0 > version_compare( $plugin['Version'], '3.0.1' ))) {
                 update_option('woocommerce_btcpay_key',
                     get_option( 'woocommerce_btcpay_key', get_option('woocommerce_bitpay_key', null) ) );
@@ -1650,7 +1650,7 @@ function fx_admin_notice_show_migration_message(){
     if( get_transient( 'fx_admin_notice_show_migration_message' ) ){
         ?>
         <div class="notice notice-warning notice-alt is-dismissible">
-            <p>The BTCPay Plugin for Woocoomerce has been updated from a 2.x version!
+            <p>The LTCPay Plugin for Woocoomerce has been updated from a 2.x version!
             <strong>We have attempted to migrate your settings. Please double check them
             <?php echo '<a href="' . get_bloginfo('wpurl') . '/wp-admin/admin.php?page=wc-settings&tab=checkout&section=wc_gateway_btcpay">here</a>'?>.
             If you don't see pairing data in your setting, make sure to pair your store again. </strong></p>

@@ -6,12 +6,13 @@
     Description: Enable your WooCommerce store to accept Litecoin with LTCPay.
     Author:      LTCPay
     Text Domain: LTCPay
-    Author URI:  https://github.com/btcpayserver
+    Author URI:  https://github.com/wangxinxi/
 
     Version:           3.0.12
+    License:           Copyright 2021 LTCPay.com, MIT License
     License:           Copyright 2011-2018 BTCPay & BitPay Inc. & LTCPay, MIT License
-    License URI:       https://github.com/btcpayserver/woocommerce-plugin/blob/master/LICENSE
-    GitHub Plugin URI: https://github.com/btcpayserver/woocommerce-plugin
+    License URI:       https://github.com/wangxinxi/woocommerce-plugin/blob/master/LICENSE
+    GitHub Plugin URI: https://github.com/wangxinxi/woocommerce-plugin
  */
 
 
